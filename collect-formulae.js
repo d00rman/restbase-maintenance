@@ -174,5 +174,5 @@ return connect().then((client) => {
             });
         }
     );
-}).then(() => console.log(`Total count: ${count}`)).finally(() => { return fs.closeAsync(fd).then(() => cc.shutdown()) });
+}).then(() => console.log(`Total count: ${count}`)).finally(() => { return fs.closeAsync(fd).then(() => cc && cc.shutdown()); });
 
