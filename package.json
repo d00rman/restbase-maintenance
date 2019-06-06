@@ -1,0 +1,23 @@
+{
+  "name": "restbase-maintenance",
+  "version": "0.1.0",
+  "description": "Maintenance scripts",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/d00rman/restbase-maintenance.git"
+  },
+  "author": "Marko Obrovac",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/wikimedia/restbase",
+  "readme": "README.md",
+  "dependencies": {
+    "bluebird": "latest",
+    "preq": "latest",
+    "cassandra-driver": "latest",
+    "js-yaml": "latest",
+    "yargs": "latest"
+  },
+  "engines": {
+    "node": ">=6"
+  }
+}
