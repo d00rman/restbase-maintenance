@@ -43,6 +43,12 @@ const argv = yargs
         describe: 'Output file name',
         type: 'string'
     })
+    .options('o', {
+        alias: 'hashonly',
+        default: false,
+        describe: 'Whether to output only the hashes of the formulae',
+        type: 'boolean'
+    })
     .argv;
 
 if (argv.help) {
@@ -56,6 +62,7 @@ const contact = `${host}:${port}`;
 const user    = argv.username;
 const pass    = argv.password;
 const file = argv.file;
+const hashOnly = argv.hashonly;
 
 
 /** Creates a single connection pool. */
@@ -135,7 +142,7 @@ return connect().then((client) => {
     cc = client;
     return eachRow(
         client,
-        'SELECT key, value FROM "local_group_globaldomain_T_mathoid_input".data',
+        'SELECT key, value FROM "globaldomain_T_mathoid__ng_input".data',
         {},
         {
             retries: 10,
@@ -145,11 +152,15 @@ return connect().then((client) => {
         (rows) => {
             const toWrite = {};
             rows.forEach((row) => {
-                let value;
-                try {
-                    value = JSON.parse(row.value);
-                    toWrite[row.key] = value;
-                } catch(e) {}
+                if (hashOnly) {
+                    toWrite[row.key] = 1;
+                } else {
+                    let value;
+                    try {
+                        value = JSON.parse(row.value);
+                        toWrite[row.key] = value;
+                    } catch(e) {}
+                }
             });
             return fs.writeAsync(fd, yaml.dump(toWrite)).then(() => {
                 Object.keys(toWrite).forEach((key) => { delete toWrite[key]; });
