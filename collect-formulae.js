@@ -72,7 +72,10 @@ function connect() {
         authProvider: new cassandra.auth.PlainTextAuthProvider(user, pass),
         sslOptions: { ca: '/dev/null' },
         promiseFactory: P.fromCallback,
-        queryOptions: { consistency: cassandra.types.consistencies.one },
+        queryOptions: { consistency: cassandra.types.consistencies.localQuorum },
+        localDataCenter: 'eqiad',
+        datacenters: ['eqiad', 'codfw'],
+        keyspace: 'system'
     });
     return client.connect().then(() => client);
 }
